@@ -10,30 +10,30 @@ var keys = [
   {keyCode: 76, color: '#BAFF00', boxShadow: '0px 0px 10px #BAFF00'},
 ]
 var key;
-window.addEventListener('keydown', function (e) {
-  const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`)
-  key = document.querySelector(`.sound[data-key="${e.keyCode}"]`)
-  if (!audio) return;// stop de function
-  audio.currentTime = 0; // rewind to the start
-  audio.play();
-  let soundColor = keys.find((sound) => sound.keyCode == e.keyCode)
-  // giveStyle(soundColor.color, soundColor.boxShadow)
-  key.style.borderColor = soundColor.color;
-  key.style.boxShadow = soundColor.boxShadow;
-  key.classList.add('playing')
-})
 
-// function giveStyle (color, boxShadow) {
-//   key.style.borderColor = color;
-//   key.style.boxShadow = boxShadow;
-// }
+function startSound (e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`)
+    key = document.querySelector(`.sound[data-key="${e.keyCode}"]`)
+    if (!audio) return;// stop de function
+    audio.currentTime = 0; // rewind to the start
+    audio.play();
+    let soundColor = keys.find((sound) => sound.keyCode == e.keyCode)
+    giveStyle(soundColor.color, soundColor.boxShadow)
+    key.classList.add('playing')
+}
+
+window.addEventListener('keydown', startSound)
+
+function giveStyle (color = '', boxShadow = '') {
+  key.style.borderColor = color;
+  key.style.boxShadow = boxShadow;
+}
 const sounds = document.querySelectorAll('.sound')
 
 function removeTransition (e) {
   if (e.propertyName != 'transform') return; // skip if it's not a transform
   this.classList.remove('playing') // this is the sound by the addEvent listener of sound in the line 23.
-  key.style.borderColor = '';
-  key.style.boxShadow = '';
+  giveStyle()
 }
 
 sounds.forEach(sound => {
