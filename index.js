@@ -11,7 +11,7 @@ var keys = [
 ]
 var key;
 
-function startSound (e) {
+function playSound (e) {
     const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`)
     key = document.querySelector(`.sound[data-key="${e.keyCode}"]`)
     if (!audio) return;// stop de function
@@ -22,13 +22,10 @@ function startSound (e) {
     key.classList.add('playing')
 }
 
-window.addEventListener('keydown', startSound)
-
 function giveStyle (color = '', boxShadow = '') {
   key.style.borderColor = color;
   key.style.boxShadow = boxShadow;
 }
-const sounds = document.querySelectorAll('.sound')
 
 function removeTransition (e) {
   if (e.propertyName != 'transform') return; // skip if it's not a transform
@@ -36,6 +33,9 @@ function removeTransition (e) {
   giveStyle()
 }
 
+const sounds = document.querySelectorAll('.sound')
+
 sounds.forEach(sound => {
   sound.addEventListener('transitionend', removeTransition)
 });
+window.addEventListener('keydown', playSound)
